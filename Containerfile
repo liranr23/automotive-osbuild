@@ -1,9 +1,6 @@
 ARG CONTAINER_IMAGE=quay.io/centos/centos
 ARG CONTAINER_TAG=stream9
 
-# This container can be used with something like:
-# sudo podman run -v $HOME:$HOME -it --rm --privileged localhost/automotive-osbuild /bin/bash
-
 FROM ${CONTAINER_IMAGE}:${CONTAINER_TAG}
 
 LABEL com.redhat.component="$NAME" \

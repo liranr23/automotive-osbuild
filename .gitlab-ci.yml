@@ -1,0 +1,7 @@
+include:
+  - project: CentOS/automotive/container-images/gitlab-profile 
+    ref: main
+    file: includes/gitlab-ci-image.yml
+
+variables:
+  IMG_NAME: automotive-osbuild
