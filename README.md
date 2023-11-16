@@ -14,10 +14,18 @@ sudo make
 
 ### podman
 
-Run container by running:
+Note: containers in these repos must be kept upto date to ensure you can build images with these tools. If these tools do not work please attempt: 1. building/running a new container locally, 2. running `dnf upgrade` in the container and 3. pulling a new container from quay.io
+
+Run a locally built container by running:
 
 ```sh
-sudo podman run -v $HOME:$HOME -it --rm --privileged automotive-osbuild /bin/bash
+sudo podman run -v $HOME:$HOME -it --rm --privileged localhost/automotive-osbuild /bin/bash
+```
+
+Or run a container from quay.io by running:
+
+```sh
+sudo podman run -v $HOME:$HOME -it --rm --privileged quay.io/centos-sig-automotive/automotive-osbuild /bin/bash
 ```
 
 ## License
