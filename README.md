@@ -4,7 +4,7 @@ Container image to be used as environment to host osbuild tools for composing Au
 
 ## Instructions
 
-This container can be used with rootful privileged containers to compose Automotive images.
+This image can be used as a rootful privileged container to compose Automotive images.
 
 You can build this container using:
 
