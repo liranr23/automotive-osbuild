@@ -24,7 +24,7 @@ RUN dnf config-manager --set-enabled crb && \
     dnf config-manager --add-repo ${STREAM9_URL_BASE}/autosd/$(arch)/packages-main/
 
 # install osbuild packages
-RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo && \
+RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git && \
     dnf install -y --nogpgcheck android-tools osbuild-auto && \
     dnf clean all
 
