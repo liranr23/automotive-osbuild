@@ -5,10 +5,13 @@
   ],
   "packageRules": [
     {
+      "description": "Ungroup osbuild from other dependencies",
+      "groupName": null,
       "matchPackageNames": ["osbuild/osbuild"],
       "schedule": [
         "at any time"
-      ]
+      ],
+      "extractVersionTemplate": "^v?(?<version>.*)$"
     }
   ]
 }
