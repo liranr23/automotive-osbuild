@@ -2,5 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>platform-engineering-org/.github"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["osbuild/osbuild"],
+      "schedule": [
+        "at any time"
+      ]
+    }
   ]
 }
