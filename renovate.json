@@ -10,14 +10,5 @@
       "matchPackageNames": ["osbuild/osbuild"],
       "schedule": ["at any time"]
     }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "fileMatch": ["Containerfile"],
-      "depNameTemplate": "osbuild/osbuild",
-      "datasourceTemplate": "gitlab-releases",
-      "extractVersionTemplate": "^v?(?<version>.*)$"
-    }
   ]
 }
