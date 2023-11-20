@@ -10,5 +10,20 @@
       "matchPackageNames": ["osbuild/osbuild"],
       "schedule": ["at any time"]
     }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^Containerfile$"
+      ],
+      "matchStrings": [
+        "ENV OSBUILD_COMMIT_SHA=\"(?<currentDigest>.*?)\"\\s"
+      ],
+      "packageNameTemplate": "osbuild/osbuild",
+      "depNameTemplate": "https://github.com/osbuild/osbuild/",
+      "currentValueTemplate": "main",
+      "datasourceTemplate": "git-refs"
+    }
   ]
 }
