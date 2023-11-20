@@ -26,6 +26,8 @@ RUN dnf config-manager --set-enabled crb && \
 # renovate: datasource=github-releases depName=osbuild/osbuild extractVersion=^v(?<version>.*)$
 ENV OSBUILD_VERSION=98
 
+ENV OSBUILD_COMMIT_SHA=cd8b17fb400e0525b2436d56c246b906ec180750
+
 # install osbuild packages
 RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git && \
     dnf install -y --nogpgcheck android-tools osbuild-auto && \
