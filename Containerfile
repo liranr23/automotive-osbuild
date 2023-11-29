@@ -23,9 +23,6 @@ RUN dnf config-manager --set-enabled crb && \
     dnf config-manager --add-repo ${STREAM9_URL_BASE}/automotive/$(arch)/packages-main/ && \
     dnf config-manager --add-repo ${STREAM9_URL_BASE}/autosd/$(arch)/packages-main/
 
-# renovate: datasource=github-releases depName=osbuild/osbuild extractVersion=^v(?<version>.*)$
-ENV OSBUILD_VERSION=98
-
 ENV OSBUILD_COMMIT_SHA="60c96febfa2c2770faec8c3718ee29d24548b3e0"
 
 # install osbuild packages
