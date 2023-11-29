@@ -5,9 +5,8 @@
   ],
   "packageRules": [
     {
-      "description": "Ungroup osbuild from other dependencies",
-      "groupName": null,
-      "matchPackageNames": ["osbuild/osbuild"],
+      "matchPackageNames": ["https://github.com/osbuild/osbuild/"],
+      "automerge": true,
       "schedule": ["at any time"]
     }
   ],
