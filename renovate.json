@@ -6,8 +6,6 @@
   "packageRules": [
     {
       "matchPackageNames": ["https://github.com/osbuild/osbuild/"],
-      "automerge": true,
-      "platformAutomerge": true,
       "schedule": ["at any time"]
     }
   ],
