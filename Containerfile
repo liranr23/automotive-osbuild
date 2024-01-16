@@ -13,7 +13,7 @@ LABEL com.redhat.component="$NAME" \
 RUN dnf update -y && \
     dnf install -y 'dnf-command(config-manager)' 'dnf-command(copr)'
 
-RUN dnf copr enable -y @osbuild/osbuild && \
+RUN dnf copr enable -y @osbuild/osbuild-stable && \
     dnf copr enable -y @centos-automotive-sig/osbuild-auto
 
 ARG STREAM9_URL_BASE=https://buildlogs.centos.org/9-stream
