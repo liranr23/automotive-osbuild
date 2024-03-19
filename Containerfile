@@ -26,6 +26,6 @@ RUN dnf config-manager --set-enabled crb && \
 ENV OSBUILD_COMMIT_SHA="6b4bb850a77feade79d839d9ea075e29ca210ae9"
 
 # install osbuild packages
-RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git && \
+RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git jq && \
     dnf install -y --nogpgcheck android-tools osbuild-auto && \
     dnf clean all
