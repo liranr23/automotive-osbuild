@@ -23,7 +23,7 @@ RUN dnf config-manager --set-enabled crb && \
     dnf config-manager --add-repo ${STREAM9_URL_BASE}/automotive/$(arch)/packages-main/ && \
     dnf config-manager --add-repo ${STREAM9_URL_BASE}/autosd/$(arch)/packages-main/
 
-ENV OSBUILD_COMMIT_SHA="7b004a297e19aab42dd12006b1cd2d5b4ac7018d"
+ENV OSBUILD_COMMIT_SHA="35fbf6a377f8432cf66416f5870c8087b3115b31"
 
 # install osbuild packages
 RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git jq && \
