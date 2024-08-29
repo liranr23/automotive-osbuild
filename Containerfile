@@ -32,5 +32,5 @@ RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git jq && \
 
 COPY /public-html/ /
 
-FROM httpd:2.4
+FROM docker.io/httpd:2.4
 COPY --from=builder /index.html /usr/local/apache2/htdocs/
