@@ -1,0 +1,189 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: automotive-osbuild-pipeline-
+  namespace: user-ns2
+  annotations:
+    io.kubernetes.cri-o.Devices: /dev/fuse
+    build.appstudio.openshift.io/repo:
+    build.appstudio.redhat.com/commit_sha: '{{revision}}'
+    build.appstudio.redhat.com/pull_request_number: '{{pull_request_number}}'
+    build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    pipelinesascode.tekton.dev/max-keep-runs: "3"
+    pipelinesascode.tekton.dev/task: "[.tekton/tasks/build/build.yaml, .tekton/tasks/push/push.yaml]"
+    pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
+      == "main"
+  creationTimestamp: null
+  labels:
+    appstudio.openshift.io/application: containerbuild
+    appstudio.openshift.io/component: containerbuild
+    pipelines.appstudio.openshift.io/type: build
+spec:
+  params:
+    - name: git-url
+      value: '{{source_url}}'
+    - name: git-revision
+      value: '{{revision}}'
+    - name: openshift-console
+      value: ''
+    - name: image-name
+      value: registry-service.kind-registry/test-component:on-pr-{{revision}}
+    - name: context-dir
+      value: .
+    - name: containerfile-path
+      value: Containerfile
+    - name: test-path
+      value: ''
+    - name: amd64
+      value: 'true'
+    - name: arm64
+      value: 'false'
+  pipelineSpec:
+    finally: []
+    params:
+      - name: git-url
+        type: string
+      - default: main
+        name: git-revision
+        type: string
+      - name: openshift-console
+        type: string
+      - name: image-name
+        type: string
+      - default: .
+        name: context-dir
+        type: string
+      - default: Containerfile
+        name: containerfile-path
+        type: string
+      - default: ''
+        name: build-args
+        type: string
+      - name: arm64
+        type: string
+      - name: amd64
+        type: string
+    tasks:
+      - name: git-clone
+        retries: 3
+        params:
+          - name: url
+            value: $(params.git-url)
+          - name: revision
+            value: $(params.git-revision)
+        taskRef:
+          params:
+          - name: name
+            value: git-clone
+          - name: version
+            value: "0.9"
+          - name: kind
+            value: task
+          resolver: hub
+        workspaces:
+        - name: output
+          workspace: source-workspace
+        - name: basic-auth
+          workspace: git-auth
+      - name: build-x86-64
+        when:
+          - input: $(params.amd64)
+            operator: in
+            values: ["true", "True"]
+        params:
+          - name: context-dir
+            value: $(params.context-dir)
+          - name: containerfile-path
+            value: $(params.containerfile-path)
+          - name: build-args
+            value: $(params.build-args)
+        runAfter:
+          - git-clone
+        taskRef:
+          name: infra-ci-operator-buildah-build
+        workspaces:
+          - name: source-workspace
+            workspace: source-workspace
+          - name: oci-images
+            workspace: oci-images
+      - name: build-aarch64
+        when:
+          - input: $(params.arm64)
+            operator: in
+            values: ["true", "True"]
+        params:
+          - name: context-dir
+            value: $(params.context-dir)
+          - name: containerfile-path
+            value: $(params.containerfile-path)
+          - name: build-args
+            value: $(params.build-args)
+        runAfter:
+          - git-clone
+        taskRef:
+          name: infra-ci-operator-buildah-build
+        workspaces:
+          - name: source-workspace
+            workspace: source-workspace
+          - name: oci-images
+            workspace: oci-images
+      - name: push
+        params:
+          - name: image-name
+            value: $(params.image-name)
+          - name: amd64
+            value: $(params.amd64)
+          - name: arm64
+            value: $(params.arm64)
+        runAfter:
+          - build-x86-64
+          - build-aarch64
+        taskRef:
+          name: infra-ci-operator-buildah-push
+        workspaces:
+          - name: oci-images
+            workspace: oci-images
+          - name: basic-auth
+            workspace: git-auth
+    workspaces:
+    - name: source-workspace
+    - name: oci-images
+    - name: git-auth
+      optional: true
+  taskRunSpecs:
+    - pipelineTaskName: build-x86-64
+      podTemplate:
+        nodeSelector:
+          kubernetes.io/arch: amd64
+    - pipelineTaskName: build-aarch64
+      podTemplate:
+        nodeSelector:
+          kubernetes.io/arch: arm64
+  taskRunTemplate: {}
+  timeouts:
+    pipeline: 1h0m0s
+  workspaces:
+    - name: source-workspace
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          volumeMode: Filesystem
+        status: {}
+    - name: oci-images
+      volumeClaimTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          volumeMode: Filesystem
+        status: {}
