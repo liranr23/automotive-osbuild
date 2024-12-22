@@ -15,7 +15,7 @@ spec:
     - env:
         - name: STORAGE_DRIVER
           value: vfs
-      image: 'registry.redhat.io/rhel9/buildah'
+      image: 'registry.access.redhat.com/ubi9/buildah@sha256:164cb956f431472d2c76cb6d1ba0c5a3f20ebb41e99a2aeb2bf151c6558243bc'
       name: push
       script: |
         #!/bin/bash
