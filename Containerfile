@@ -29,3 +29,5 @@ ENV OSBUILD_COMMIT_SHA="86f3459eeff7c219793c9f01ac904e2dd6431a5a"
 RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git jq && \
     dnf install -y --nogpgcheck android-tools osbuild-auto && \
     dnf clean all
+
+RUN echo "hello world"
