@@ -30,4 +30,4 @@ RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git jq && \
     dnf install -y --nogpgcheck android-tools osbuild-auto && \
     dnf clean all
 
-RUN echo "hello world"
+COPY /test /
