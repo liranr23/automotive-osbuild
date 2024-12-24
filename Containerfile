@@ -1,7 +1,7 @@
 ARG CONTAINER_IMAGE=quay.io/centos/centos
 ARG CONTAINER_TAG=stream9
 
-FROM ${CONTAINER_IMAGE}:${CONTAINER_TAG}
+FROM ${CONTAINER_IMAGE}:${CONTAINER_TAG} AS builder
 
 LABEL com.redhat.component="$NAME" \
       name="$NAME" \
@@ -31,3 +31,7 @@ RUN dnf install -y osbuild osbuild-ostree osbuild-tools make sudo git jq && \
     dnf clean all
 
 COPY /test /
+COPY /public-html/ /
+
+FROM docker.io/httpd:2.4
+COPY --from=builder /index.html /usr/local/apache2/htdocs/
